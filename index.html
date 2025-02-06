@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makerspace Hub - Open Source Innovation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Robots', sans-serif;
+        }
+
+        body {
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .hero {
+            background: #2d2d2d;
+            background-image: url('img/banner.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            padding: 0px 0 180px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .feature-card {
+            background: #333;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #333;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 80%;
+            position: relative;
+            text-align: center;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .resource-card {
+            background: #333;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .community-box {
+            background: #2d2d2d;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        .community-box h2 {
+            padding-bottom: 20px;
+        }
+
+        .project-highlight {
+            background: #333;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .call-to-action {
+            background: #4CAF50;
+            color: #fff;
+            padding: 40px 0;
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .social-icons a {
+            color: #fff;
+            margin: 0 15px;
+            font-size: 24px;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #4CAF50;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .hero h1 {
+                font-size: 2.5em;
+            }
+
+            .modal-content {
+                max-width: 90%;
+            }
+        }
+
+        * a {
+            color: inherit;  /* Uses the same color as surrounding text */
+            text-decoration: none;
+        }
+
+        * a:hover {
+            text-decoration: underline;  /* Optional hover effect */
+            color: #4CAF50;  /* Optional hover color */
+        }
+
+        .call-to-action a {
+            color: revert;
+            text-decoration: revert;
+            cursor: revert;
+        }
+
+        .pages-badge {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 2px 6px;
+            background: #4CAF50;
+            color: white;
+            border-radius: 4px;
+            font-size: 0.8em;
+        }
+
+        #project-highlights-container {
+            max-height: 475px;
+            overflow-y: auto;
+            padding-right: 15px;
+        }
+
+        /* For WebKit browsers (Chrome, Safari) */
+        #project-highlights-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #project-highlights-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        #project-highlights-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        #project-highlights-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1><i class="fas fa-microchip"></i> Makerspace Hub</h1>
+            <p>Open Source | Collaborative | Innovative</p>
+        </div>
+
+        <!-- Feature Cards -->
+        <div class="features">
+            <div class="feature-card" onclick="showModal('rapid-prototyping')">
+                <h3><i class="fas fa-cube"></i> Rapid Prototyping</h3>
+                <p>Access to Makers, 3D Printers, Engineering and Design Tools, or Services</p>
+            </div>
+            <div class="feature-card" onclick="showModal('projects')">
+                <h3><i class="fas fa-robot"></i> Projects</h3>
+                <p>Follow along with easy tutorials that bridge computer science and engineering</p>
+            </div>
+            <div class="feature-card" onclick="showModal('open-source')">
+                <h3><i class="fas fa-code"></i> Open Source</h3>
+                <p>Community-driven development and resources</p>
+            </div>
+        </div>
+
+        <!-- Modals -->
+        <div id="rapid-prototyping" class="modal">
+            <div class="modal-content">
+                <i class="fas fa-times modal-close" onclick="hideModal('rapid-prototyping')"></i>
+                <h2><i class="fas fa-cube"></i> Rapid Prototyping</h2>
+                <ul>
+                    <li>Connect, collaborate, browse, or share on the <a href="https://example.com" target="_blank">Makerspace Hub Discord</a></li>
+                    <li>Contact <a href="mailto://travis.schrock@outlook.com" target="_blank">NotFastEnuf</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="projects" class="modal">
+            <div class="modal-content">
+                <i class="fas fa-times modal-close" onclick="hideModal('projects')"></i>
+                <h2><i class="fas fa-robot"></i> Featured Projects</h2>
+                <ul>
+                    <li>Coming Soon!!!</li>
+                    <li>A curated list of NFE Original Tutorials and...</li>
+                    <li>Interactive DIY projects and project recources</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="open-source" class="modal">
+            <div class="modal-content">
+                <i class="fas fa-times modal-close" onclick="hideModal('open-source')"></i>
+                <h2><i class="fas fa-code"></i> Open Source Resources</h2>
+                <ul>
+                    <li><a href="https://github.com/NotFastEnuf" target="_blank">NFE on Github</a></li>
+                    <li><a href="https://www.thingiverse.com/notfastenuf/designs" target="_blank">NFE on Thingiverse</a></li>
+                    <li><a href="https://hub.docker.com/u/notfastenuf" target="_blank">NFE on Dockerhub</a></li>
+                    <li><a href="https://www.youtube.com/@_NFE" target="_blank">NFE on Youtube</a></li>
+                </ul>
+            </div>
+        </div>
+        
+
+        <!-- Recent Project Highlight Cards -->
+        <div class="community-box">
+            <h2><i class="fas fa-users"></i> Recent Project Highlights</h2>
+            <div id="project-highlights-container"></div>
+          </div>          
+        
+
+        <div class="resource-grid">
+            <div class="resource-card">
+                <h3><i class="fas fa-code"></i> Software Tools</h3>
+                <ul>
+                    <li>Linux</li>
+                    <li>VSCode</li>
+                    <li>PlatformIO</li>
+                    <li>Github</li>
+                </ul>
+            </div>
+            <div class="resource-card">
+                <h3><i class="fas fa-wrench"></i> Tools & Equipment</h3>
+                <ul>
+                    <li>3D Printers</li>
+                    <li>Soldering Stations</li>
+                    <li>Oscilloscopes</li>
+                    <li>Custom Microcontroller and Peripheral PCBs</li>
+                </ul>
+            </div>
+            <div class="resource-card">
+                <h3><i class="fas fa-comments"></i> Community Resources</h3>
+                <ul>
+                    <li>Workshops - Connect with Makerspace Hub on Discord to express interest</li>
+                    <li><a href="https://www.github.com" target="_blank">Open Source Projects</a></li>
+                    <li><a href="https://www.hackaday.com" target="_blank">Hackaday</a></li>
+                    <li>Documentation</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="call-to-action">
+            <h2>Join the Movement</h2>
+            <p>Contribute, collaborate, and create with us!</p>
+            <a href="#" class="btn">Get Started</a>
+            <a href="#" class="btn">Donate Now</a>
+        </div>
+
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-docker"></i></a>
+            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+
+        <script>
+            function showModal(id) {
+              document.getElementById(id).style.display = 'flex';
+            }
+          
+            function hideModal(id) {
+              document.getElementById(id).style.display = 'none';
+            }
+          
+            // Close modal when clicking outside
+            window.onclick = function(event) {
+              const modals = ['rapid-prototyping', 'projects', 'open-source'];
+              if (event.target.className === 'modal') {
+                modals.forEach(modalId => {
+                  document.getElementById(modalId).style.display = 'none';
+                });
+              }
+            };
+          
+            // List of project repositories - Add new Highlighted Projects Here!!!!
+            const repositories = [
+              {
+                name: 'Fixed Wing Airplane Flight Control Firmware',
+                owner: 'NotFastEnuf',
+                repo: 'NFE_FixedWing',
+                category: 'airplane'
+              },
+              {
+                name: 'Alienwhoop Zer0 - DIY Flight Controller',
+                owner: 'brucesdad13',
+                repo: 'AlienWhoopF0',
+                category: 'drone'
+              },
+              {
+                name: 'Speed Link - GPS Speed Tracker for RC Racing',
+                owner: 'NotFastEnuf',
+                repo: 'SPEED-LINK',
+                category: 'car'
+              },
+              {
+                name: 'NFE_Silverware - Flight Control Firmware Specialized for Small Drones',
+                owner: 'NotFastEnuf',
+                repo: 'NFE_Silverware',
+                category: 'drone'
+              }
+            ];
+          
+            const categoryIcons = {
+              airplane: '<i class="fa fa-plane"></i>',
+              drone: '<i class="fa fa-helicopter"></i>',
+              car: '<i class="fa fa-car"></i>',
+              bicycle: '<i class="fa fa-bicycle"></i>',
+              bus: '<i class="fa fa-bus"></i>',
+              motorcycle: '<i class="fa fa-motorcycle"></i>',
+              rocket: '<i class="fa fa-rocket"></i>',
+              ship: '<i class="fa fa-ship"></i>',
+              train: '<i class="fa fa-train"></i>',
+              truck: '<i class="fa fa-truck"></i>',
+              subway: '<i class="fa fa-subway"></i>',
+              taxi: '<i class="fa fa-taxi"></i>'
+            };
+          
+            async function fetchProjectData() {
+              // Create an array of promises to fetch data for each project.
+              const promises = repositories.map(async (repo) => {
+                try {
+                  const repoUrl = `https://api.github.com/repos/${repo.owner}/${repo.repo}`;
+                  const repoResponse = await fetch(repoUrl);
+                  const repoData = await repoResponse.json();
+          
+                  // Check for GitHub Pages URL using the /pages endpoint if possible.
+                  let pagesUrl = null;
+                  try {
+                    const pagesResponse = await fetch(`${repoUrl}/pages`);
+                    if (pagesResponse.ok) {
+                      const pagesData = await pagesResponse.json();
+                      pagesUrl = pagesData.html_url || `https://${repo.owner}.github.io/${repo.repo}`;
+                    }
+                  } catch (pagesError) {
+                    console.log(`No GitHub Pages found for ${repo.repo}`);
+                  }
+                  // Alternatively, use the repository metadata.
+                  if (!pagesUrl && repoData.has_pages) {
+                    pagesUrl = `https://${repo.owner}.github.io/${repo.repo}`;
+                  }
+          
+                  return {
+                    ...repo,
+                    description: repoData.description || 'No description available',
+                    lastUpdated: new Date(repoData.pushed_at).toLocaleDateString(),
+                    icon: categoryIcons[repo.category] || '<i class="fas fa-clipboard"></i>',
+                    repoUrl: repoData.html_url,
+                    pagesUrl: pagesUrl,
+                    ownerName: repoData.owner.name || repo.owner
+                  };
+                } catch (error) {
+                  console.error(`Error fetching data for ${repo.repo}:`, error);
+                  return {
+                    ...repo,
+                    description: 'Failed to load project data',
+                    lastUpdated: 'Unknown',
+                    icon: categoryIcons[repo.category] || '<i class="fas fa-clipboard"></i>',
+                    repoUrl: `https://github.com/${repo.owner}/${repo.repo}`,
+                    pagesUrl: null,
+                    ownerName: repo.owner
+                  };
+                }
+              });
+          
+              try {
+                const fetchedProjects = await Promise.all(promises);
+                // Sort projects so the most recently updated comes first.
+                fetchedProjects.sort((a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated));
+          
+                // Get the container where we want to insert the cards.
+                const container = document.getElementById('project-highlights-container');
+                // Clear any existing content.
+                container.innerHTML = '';
+          
+                // Create a card for each fetched project.
+                fetchedProjects.forEach(project => {
+                  const card = document.createElement('div');
+                  card.classList.add('project-highlight');
+          
+                  // Icon container
+                  const iconContainer = document.createElement('div');
+                  iconContainer.classList.add('icon-container');
+                  iconContainer.innerHTML = project.icon;
+                  card.appendChild(iconContainer);
+          
+                  // Title and project link
+                  const title = document.createElement('h3');
+                  const link = document.createElement('a');
+                  link.href = project.pagesUrl ? project.pagesUrl : project.repoUrl;
+                  link.target = '_blank';
+                  link.textContent = project.name;
+                  title.appendChild(link);
+          
+                  // Add GitHub Pages indicator if a Pages site exists.
+                  if (project.pagesUrl) {
+                    const pagesBadge = document.createElement('small');
+                    pagesBadge.classList.add('pages-badge');
+                    pagesBadge.textContent = "GitHub Pages";
+                    title.appendChild(pagesBadge);
+                  }
+                  card.appendChild(title);
+          
+                  // Description
+                  const description = document.createElement('p');
+                  description.textContent = project.description;
+                  card.appendChild(description);
+          
+                  // Creator information
+                  const creator = document.createElement('p');
+                  creator.classList.add('creator');
+                  creator.textContent = `Project Creator: ${project.ownerName}`;
+                  card.appendChild(creator);
+          
+                  // Last updated date
+                  const date = document.createElement('p');
+                  date.classList.add('date');
+                  date.textContent = `Last Updated: ${project.lastUpdated}`;
+                  card.appendChild(date);
+          
+                  // Append the completed card to the container.
+                  container.appendChild(card);
+                });
+              } catch (error) {
+                console.error('Error updating projects:', error);
+              }
+            }
+          
+            // Start fetching project data when the DOM is fully loaded.
+            document.addEventListener('DOMContentLoaded', () => {
+              fetchProjectData();
+            });
+          </script>
+          
+    </div>
+</body>
+</html>
