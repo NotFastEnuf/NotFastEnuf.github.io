@@ -386,18 +386,8 @@
                   const repoResponse = await fetch(repoUrl);
                   const repoData = await repoResponse.json();
           
-                  // Check for GitHub Pages URL using the /pages endpoint if possible.
+                  // Check for GitHub Pages URL using the api.
                   let pagesUrl = null;
-                  try {
-                    const pagesResponse = await fetch(`${repoUrl}/pages`);
-                    if (pagesResponse.ok) {
-                      const pagesData = await pagesResponse.json();
-                      pagesUrl = pagesData.html_url || `https://${repo.owner}.github.io/${repo.repo}`;
-                    }
-                  } catch (pagesError) {
-                    console.log(`No GitHub Pages found for ${repo.repo}`);
-                  }
-                  // Alternatively, use the repository metadata.
                   if (!pagesUrl && repoData.has_pages) {
                     pagesUrl = `https://${repo.owner}.github.io/${repo.repo}`;
                   }
