@@ -21,15 +21,27 @@
             overflow-x: hidden;
         }
 
-        .container {
-            flex-wrap: wrap;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+        /* Animation */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        /* Fixed Transparent Header */
+        /* Keyframe animation for card sliding up */
+        @keyframes slideUp {
+            to {
+                transform: translateY(0); /* Final position */
+            }
+        }
+
+        /* Fixed Transparent Header **********************************************************************************************************************************/
         .fixed-header {
             position: fixed;
             height: 12vh;
@@ -40,6 +52,14 @@
             color: white;
             z-index: 1000;
             padding: 10px 0;
+        }
+
+        .container {
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
         .fixed-header .container {
@@ -63,8 +83,61 @@
             margin: 0;
             animation: fadeIn 2s ease-out;
         }
+
+        /*hamburger menu*/
+        .hamburger-menu {
+        display: none; /* Hide the hamburger menu by default */
+        }
+
+        /* Media query for transition to hamburger menu */
+        @media (max-width: 700px) {
+            .container > p {
+                display: none; /* Hide the elements */
+            }
+
+            .left-content > p {
+                display: none; /* Hide the elements */
+            }
+
+            .hamburger-menu {
+                display: block; /* Show the hamburger menu */
+                cursor: pointer;
+                /* Add styles for the hamburger menu here */
+                width: 30px;
+                height: 20px;
+                position: relative;
+            }
+
+            .hamburger-menu::before,
+            .hamburger-menu::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                width: 100%;
+                height: 2px;
+                background-color: white;
+            }
+
+            .hamburger-menu::before {
+                top: 0;
+            }
+
+            .hamburger-menu::after {
+                bottom: 0;
+            }
+
+            .hamburger-menu > span {
+                position: absolute;
+                top: 50%;
+                left: 0;
+                width: 100%;
+                height: 2px;
+                background-color: white;
+                transform: translateY(-50%);
+            }
+        }
         
-        /* Banner Section */
+        /* Banner Section *************************************************************************************************************************************/
         .banner {
             display: flex;
             background: #2d2d2d;
@@ -98,31 +171,18 @@
             font-size: 1.5em;
         }
 
-        /* Animation */
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
 
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Feature Sections with Background Videos */
+        /* Feature Sections with Background Videos ********************************************************************************************************************/
         .feature-section {
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-
             overflow: hidden;
             position: sticky;
-            top: 12vh; /* After Sticky Height offset */
+            top: 12vh; /* After Sticky Height offset - Adjust to height of fixed header */
             z-index: 100;
-            height: 50vh; /* Adjust height as needed */
+            height: 50vh; /* Adjust height as desired */
             margin-top: 0; /* Reset default margin */
         }
 
@@ -147,15 +207,8 @@
             padding: 20px;
             /* Position the card at the bottom initially */
             transform: translateY(100%);
-            animation: slideUp 1s forwards; /* Animate into view */
+            animation: slideUp 2s forwards; /* Animate into view */
             z-index: 1;
-        }
-
-        /* Keyframe animation for card sliding up */
-        @keyframes slideUp {
-            to {
-                transform: translateY(0); /* Final position */
-            }
         }
 
         .content-overlay h2 {
@@ -176,8 +229,8 @@
             position: relative;
         }
 
-        /* Project Highlights Section and other existing styles */
-        /* Feature Cards (Hidden) */
+        /* Project Highlights Section and other existing styles ************************************************************************************************************/
+        /* Feature Cards */
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -264,6 +317,32 @@
             border-left: 4px solid #4CAF50;
         }
 
+        #project-highlights-container {
+            max-height: 475px;
+            overflow-y: auto;
+            padding-right: 15px;
+        }
+
+        /* For WebKit browsers (Chrome, Safari) */
+        #project-highlights-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #project-highlights-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        #project-highlights-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        #project-highlights-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+
+        /* Footer *******************************************************************************************************************************************************/
         .call-to-action {
             background: #4CAF50;
             color: #fff;
@@ -310,21 +389,8 @@
             justify-content: center;
         }
 
-        @media (max-width: 768px) {
-            /*.container {
-                padding: 10px;
-            }*/
 
-            .banner h1 {
-                font-size: 2.5em;
-            }
-
-            .modal-content {
-                max-width: 90%;
-            }
-        }
-
-        /* General Link Styles */
+        /* General Link Styles ****************************************************************************************************************************************/
         a.btn {
             cursor: pointer;
         }
@@ -374,30 +440,6 @@
             font-size: 0.8em;
         }
 
-        #project-highlights-container {
-            max-height: 475px;
-            overflow-y: auto;
-            padding-right: 15px;
-        }
-
-        /* For WebKit browsers (Chrome, Safari) */
-        #project-highlights-container::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        #project-highlights-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        #project-highlights-container::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 4px;
-        }
-
-        #project-highlights-container::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-
     </style>
 </head>
 
@@ -416,6 +458,9 @@
                     &nbsp;&nbsp;
                     <a href="mailto://travis.schrock@outlook.com" target="_blank">Contact Me</a>
                 </p>
+                <div class="hamburger-menu" onclick="showModal('menu-contents')">
+                    <span></span>
+                </div>
             </a>
         </div>
     </header>
@@ -423,14 +468,13 @@
     <!-- banner Section -->
     <div class="banner"></div>
 
-    <!-- Feature Sections with Background Videos -->
+    <!-- Feature Sections with Background Video -->
     <section class="feature-section">
         <video autoplay muted loop class="background-video">
             <source src="vid/video1.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </section>
-
     <!-- Dark Section -->
     <div class="dark-section">
         <div class="content-overlay">
@@ -441,13 +485,13 @@
         </div>
     </div>
 
+    <!-- Feature Sections with Background Video -->
     <section class="feature-section">
         <video autoplay muted loop class="background-video">
             <source src="vid/video2.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </section>
-
     <!-- Dark Section -->
     <div class="dark-section">
         <div class="content-overlay">
@@ -458,13 +502,13 @@
         </div>
     </div>
 
+    <!-- Feature Sections with Background Video -->
     <section class="feature-section">
         <video autoplay muted loop class="background-video">
             <source src="vid/video3.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </section>
-
     <!-- Dark Section -->
     <div class="dark-section">
         <div class="content-overlay">
@@ -476,6 +520,18 @@
     </div>
 
     <!-- Modals -->
+    <div id="menu-contents" class="modal">
+        <div class="modal-content">
+            <i class="fas fa-times modal-close" onclick="hideModal('menu-contents')"></i>
+            <h2><i class="fas fa-microchip"></i> Makerspace Hub</h2>
+            <ul>
+                <li><a class="btn" onclick="showModal('projects')">Get Involved</a></li>
+                <li><a href="https://www.paypal.me/NotFastEnuf" target="_blank">Support Me</a></li>
+                <li><a href="mailto://travis.schrock@outlook.com" target="_blank">Contact Me</a></li>
+            </ul>
+        </div>
+    </div>
+
     <div id="rapid-prototyping" class="modal">
         <div class="modal-content">
             <i class="fas fa-times modal-close" onclick="hideModal('rapid-prototyping')"></i>
@@ -550,6 +606,7 @@
         </div>
     </div>
 
+    <!-- Footer -->
     <div class="call-to-action">
         <h2>Join the Movement</h2>
         <p>Contribute, collaborate, and create with us!</p>
