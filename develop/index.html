@@ -627,69 +627,71 @@
     
 
     <script>
-          function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-function isContentOverlayCentered(featureSection, contentOverlay) {
-    if (!featureSection || !contentOverlay) return false;
-
-    const featureRect = featureSection.getBoundingClientRect();
-    const overlayRect = contentOverlay.getBoundingClientRect();
-
-    const featureCenterY = featureRect.top + featureRect.height / 2;
-    const overlayCenterY = overlayRect.top + overlayRect.height / 2;
-    const threshold = 5; // Adjust this value for tolerance
-
-    return (
-        overlayCenterY <= featureCenterY - threshold
-    );
-}
-
-function isContentOverlayReleased(featureSection, contentOverlay) { //change contentOverlay to Banner Box 
-    if (!featureSection || !contentOverlay) return false;
-
-    const featureRect = featureSection.getBoundingClientRect();
-    const overlayRect = contentOverlay.getBoundingClientRect();
-
-    const featureTopY = featureRect.top;
-    const overlayBottomY = overlayRect.bottom;
-    const threshold = 5; // Adjust this value for tolerance
-
-    return (
-        featureTopY >= overlayBottomY - threshold
-    );
-}
-
-function checkCentering() {
-    const featureSections = document.querySelectorAll('.feature-section');
-    const contentOverlays = document.querySelectorAll('.content-overlay');
-    const fixedHeader = document.querySelector('.fixed-header');
-
-    featureSections.forEach((featureSection, index) => {
-        const contentOverlay = contentOverlays[index];
-        if (contentOverlay && isContentOverlayCentered(featureSection, contentOverlay)) {
-            console.log(`content-overlay ${index + 1} is centered in feature-section`);
-            // Add your actions here when centered
-            featureSection.classList.add('centered');
-        } else {
-            console.log(`content-overlay ${index + 1} is not centered`);
-            // Add your actions here when not centered
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-        if (contentOverlay && isContentOverlayReleased(featureSection, fixedHeader)) {
-            console.log(`content-overlay ${index + 1} is released from feature-section`);
-            // Add your actions here when released
-            featureSection.classList.remove('centered')
-        } else {
-            console.log(`content-overlay ${index + 1} is LOCKED`);
-            // Add your actions here when locked
+        
+        // Series of functions for scroll effect to wipe up feature cards over background video with sticky effect to header
+        function isContentOverlayCentered(featureSection, contentOverlay) {
+            if (!featureSection || !contentOverlay) return false;
+
+            const featureRect = featureSection.getBoundingClientRect();
+            const overlayRect = contentOverlay.getBoundingClientRect();
+
+            const featureCenterY = featureRect.top + featureRect.height / 2;
+            const overlayCenterY = overlayRect.top + overlayRect.height / 2;
+            const threshold = 5; // Adjust this value for tolerance
+
+            return (
+                overlayCenterY <= featureCenterY - threshold
+            );
         }
-    });
-}
 
-window.addEventListener('scroll', checkCentering);
-window.addEventListener('resize', checkCentering);
+        function isContentOverlayReleased(featureSection, contentOverlay) { //change contentOverlay to Banner Box 
+            if (!featureSection || !contentOverlay) return false;
 
+            const featureRect = featureSection.getBoundingClientRect();
+            const overlayRect = contentOverlay.getBoundingClientRect();
 
+            const featureTopY = featureRect.top;
+            const overlayBottomY = overlayRect.bottom;
+            const threshold = 5; // Adjust this value for tolerance
+
+            return (
+                featureTopY >= overlayBottomY - threshold
+            );
+        }
+
+        function checkCentering() {
+            const featureSections = document.querySelectorAll('.feature-section');
+            const contentOverlays = document.querySelectorAll('.content-overlay');
+            const fixedHeader = document.querySelector('.fixed-header');
+
+            featureSections.forEach((featureSection, index) => {
+                const contentOverlay = contentOverlays[index];
+                if (contentOverlay && isContentOverlayCentered(featureSection, contentOverlay)) {
+                    console.log(`content-overlay ${index + 1} is centered in feature-section`);
+                    // Add your actions here when centered
+                    featureSection.classList.add('centered');
+                } else {
+                    console.log(`content-overlay ${index + 1} is not centered`);
+                    // Add your actions here when not centered
+                }
+                if (contentOverlay && isContentOverlayReleased(featureSection, fixedHeader)) {
+                    console.log(`content-overlay ${index + 1} is released from feature-section`);
+                    // Add your actions here when released
+                    featureSection.classList.remove('centered')
+                } else {
+                    console.log(`content-overlay ${index + 1} is LOCKED`);
+                    // Add your actions here when locked
+                }
+            });
+        }
+
+        window.addEventListener('scroll', checkCentering);
+        window.addEventListener('resize', checkCentering);
+
+        //Modal related functions
         function showModal(id) {
             document.getElementById(id).style.display = 'flex';
         }
@@ -700,7 +702,7 @@ window.addEventListener('resize', checkCentering);
 
         // Close modal when clicking outside
         window.onclick = function (event) {
-            const modals = ['rapid-prototyping', 'projects', 'open-source'];
+            const modals = ['menu-contents','rapid-prototyping', 'projects', 'open-source'];
             if (event.target.className === 'modal') {
                 modals.forEach(modalId => {
                     document.getElementById(modalId).style.display = 'none';
@@ -708,33 +710,8 @@ window.addEventListener('resize', checkCentering);
             }
         };
 
-        // List of project repositories - Add new Highlighted Projects Here!!!!
-        const repositories = [
-            {
-                name: 'Fixed Wing Airplane Flight Control Firmware',
-                owner: 'NotFastEnuf',
-                repo: 'NFE_FixedWing',
-                category: 'airplane'
-            },
-            {
-                name: 'Alienwhoop Zer0 - DIY Flight Controller',
-                owner: 'brucesdad13',
-                repo: 'AlienWhoopF0',
-                category: 'drone'
-            },
-            {
-                name: 'Speed Link - GPS Speed Tracker for RC Racing',
-                owner: 'NotFastEnuf',
-                repo: 'SPEED-LINK',
-                category: 'car'
-            },
-            {
-                name: 'NFE_Silverware - Flight Control Firmware Specialized for Small Drones',
-                owner: 'NotFastEnuf',
-                repo: 'NFE_Silverware',
-                category: 'drone'
-            }
-        ];
+        // Self Updating Project Highlights Scripts - Uses github api and builds out containers to generate populated project cards
+
 
         const categoryIcons = {
             airplane: '<i class="fa fa-plane"></i>',
@@ -825,6 +802,34 @@ window.addEventListener('resize', checkCentering);
 
         // Fetch project data on window load
         window.onload = fetchProjectData;
+
+        // List of project repositories - Add new Highlighted Projects Here!!!!
+        const repositories = [
+            {
+                name: 'Fixed Wing Airplane Flight Control Firmware',
+                owner: 'NotFastEnuf',
+                repo: 'NFE_FixedWing',
+                category: 'airplane'
+            },
+            {
+                name: 'Alienwhoop Zer0 - DIY Flight Controller',
+                owner: 'brucesdad13',
+                repo: 'AlienWhoopF0',
+                category: 'drone'
+            },
+            {
+                name: 'Speed Link - GPS Speed Tracker for RC Racing',
+                owner: 'NotFastEnuf',
+                repo: 'SPEED-LINK',
+                category: 'car'
+            },
+            {
+                name: 'NFE_Silverware - Flight Control Firmware Specialized for Small Drones',
+                owner: 'NotFastEnuf',
+                repo: 'NFE_Silverware',
+                category: 'drone'
+            }
+        ];
     </script>
 </body>
 
